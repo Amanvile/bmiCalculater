@@ -2,17 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bmi/reusable_card.dart';
 import 'gender_widget.dart';
-const bottomContainerHeight = 80.0;
+import 'package:bmi/Constants.dart';
 
-const bottomContainerColor = 0XFFEB1555;
-
-const activeCardColor = Color(0xFF1D1E33);
-const inActiveCardColor = Color(0XFF111328);
-
-enum Gender {
-  Female,
-  male
-}
+enum Gender { Female, Male }
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -22,20 +14,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
-  Color maleCardColor=inActiveCardColor;
-  Color femaleCardColor=activeCardColor;
-
-  void selectGender(Gender SelectedGender ){
-if(SelectedGender ==Gender.Female){
-      maleCardColor=activeCardColor;
-    femaleCardColor=inActiveCardColor;
-  }
-  if(SelectedGender ==Gender.male){
-  maleCardColor=inActiveCardColor;
-  femaleCardColor=activeCardColor;
-  }}
-
+  int _currentHeightValue = 150;
+  Gender selectedGender = Gender.Male;
 
   @override
   Widget build(BuildContext context) {
@@ -45,37 +25,41 @@ if(SelectedGender ==Gender.Female){
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Row(
                 children: [
                   Expanded(
-                    child: GestureDetector(
-                      onTap: ()=>{
+                    child: reusableCard(
+                      onPress: () => {
                         setState(() {
-                      selectGender(Gender.male);
+                          selectedGender = Gender.Female;
                         })
-
-
                       },
-                      child: reusableCard(
-                        cardChildWidget: genderWidget(iconData:FontAwesomeIcons.mars,iconText: 'male',),
-                        color: maleCardColor ,
+                      cardChildWidget: genderWidget(
+                        iconData: FontAwesomeIcons.mars,
+                        iconText: 'Male',
                       ),
+                      color: selectedGender == Gender.Male
+                          ? kActiveCardColor
+                          : kInActiveCardColor,
                     ),
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      onTap: ()=>{
+                    child: reusableCard(
+                      onPress: () => {
                         setState(() {
-                          selectGender(Gender.Female);
+                          selectedGender = Gender.Male;
                         })
-
                       },
-                      child: reusableCard(
-                        cardChildWidget: genderWidget(iconData:FontAwesomeIcons.venus,iconText: 'Female',),
-                        color: femaleCardColor,
+                      cardChildWidget: genderWidget(
+                        iconData: FontAwesomeIcons.venus,
+                        iconText: 'Female',
                       ),
+                      color: selectedGender == Gender.Female
+                          ? kActiveCardColor
+                          : kInActiveCardColor,
                     ),
                   ),
                 ],
@@ -85,7 +69,48 @@ if(SelectedGender ==Gender.Female){
               children: [
                 Expanded(
                   child: reusableCard(
-                    color: activeCardColor,
+                    color: kActiveCardColor,
+                    cardChildWidget: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Height',
+                          style: kTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              _currentHeightValue.toString(),
+                              style: KNumberStyle,
+                            ),
+                            Text(
+                              "cm",
+                              style: kTextStyle,
+                            ),
+                          ],
+                        ),
+                        Slider(
+                          value: _currentHeightValue.toDouble(),
+                          max: 220,
+                          min: 120,
+                          activeColor: kBottomContainerColor,
+                          inactiveColor: Color(0XFF8D8E98),
+                          onChanged: (double value) {
+                            setState(() {
+                              _currentHeightValue = value.round();
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    onPress: () => {
+                      setState(() {
+                        // selectedGender = Gender.Male;
+                      })
+                    },
                   ),
                 ),
               ],
@@ -94,20 +119,30 @@ if(SelectedGender ==Gender.Female){
               children: [
                 Expanded(
                   child: reusableCard(
-                    color: activeCardColor,
+                    color: kActiveCardColor,
+                    onPress: () => {
+                      setState(() {
+                        // selectedGender = Gender.Male;
+                      })
+                    },
                   ),
                 ),
                 Expanded(
                   child: reusableCard(
-                    color: activeCardColor,
+                    color: kActiveCardColor,
+                    onPress: () => {
+                      setState(() {
+                        // selectedGender = Gender.Male;
+                      })
+                    },
                   ),
                 ),
               ],
             ),
             Container(
-              height: bottomContainerHeight,
+              height: kBottomContainerHeight,
               width: double.infinity,
-              color: Color(bottomContainerColor),
+              color: kBottomContainerColor,
               margin: EdgeInsets.only(top: 10),
             )
           ],
@@ -116,7 +151,3 @@ if(SelectedGender ==Gender.Female){
     );
   }
 }
-
-
-
-

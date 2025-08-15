@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:bmi/Constants.dart';
 
-const textStyle = TextStyle(fontSize: 18,
-    color: Color(0xFF8D8E98)) ;
+
 class genderWidget extends StatelessWidget {
   final IconData iconData;
   final String iconText;
@@ -18,7 +18,7 @@ class genderWidget extends StatelessWidget {
           size: 80,
         ),
         SizedBox(height: 18),
-        Text(iconText,style: textStyle,)
+        Text(iconText,style: kTextStyle,)
       ],
     );
   }
